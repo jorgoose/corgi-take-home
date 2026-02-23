@@ -6,9 +6,3 @@ export interface PerformanceData {
   currentValues: DailyValues;
   timeSeries: TimeSeriesPoint[];
 }
-
-export interface MetricItem {
-  label: string;
-  value: string;
-  tooltip?: string;
-}

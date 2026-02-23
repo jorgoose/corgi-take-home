@@ -1,4 +1,5 @@
 import { TimeSeriesPoint } from "../types/fund";
+import { calculateFundReturn } from "../calculations/buffer-calculations";
 import { createFundRandom, randomNormal } from "./seed-helpers";
 
 // Annual volatilities for each reference asset (realistic)
@@ -44,32 +45,6 @@ function generatePricePath(
 }
 
 /**
- * Simple fund return model: tracks ref asset with buffer/cap constraints applied at observation
- * This is a simplified model - real buffer ETFs use options pricing.
- * For mock data, we use a linear interpolation approach.
- */
-function calculateFundReturnFromRefReturn(
-  refReturn: number,
-  capNet: number,
-  bufferStartPct: number,
-  bufferEndPct: number,
-  dayFraction: number, // 0 to 1, how far through the period
-): number {
-  // Scale cap and buffer based on time elapsed (simplified model)
-  // In reality, options pricing is more complex, but this gives realistic-looking data
-  const effectiveCap = capNet;
-
-  // Apply buffer/cap logic
-  if (refReturn >= effectiveCap) return effectiveCap;
-  if (refReturn >= 0) return refReturn;
-
-  // Negative returns
-  if (refReturn >= bufferStartPct) return refReturn; // in gap for deep, or above buffer for standard
-  if (refReturn >= bufferEndPct) return bufferStartPct; // buffer absorbing
-  return bufferStartPct + (refReturn - bufferEndPct); // beyond buffer
-}
-
-/**
  * Generate a date string array for trading days between start and end
  */
 function generateTradingDates(startDate: string, numDays: number): string[] {
@@ -109,13 +84,11 @@ export function generateMockTimeSeries(config: MockTimeSeriesConfig): TimeSeries
   const points: TimeSeriesPoint[] = [];
   for (let i = 0; i < Math.min(prices.length, dates.length); i++) {
     const refReturn = ((prices[i] / config.startingRefPrice) - 1) * 100;
-    const dayFraction = i / config.tradingDays;
-    const fundReturn = calculateFundReturnFromRefReturn(
+    const fundReturn = calculateFundReturn(
       refReturn / 100,
       config.capNet / 100,
       config.bufferStartPct / 100,
       config.bufferEndPct / 100,
-      dayFraction,
     ) * 100;
 
     points.push({

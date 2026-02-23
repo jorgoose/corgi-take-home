@@ -24,12 +24,12 @@ interface PerformanceChartProps {
   bufferEndPct: number;
 }
 
-function CustomTooltip({ active, payload, label }: any) {
+function CustomTooltip({ active, payload, label }: { active?: boolean; payload?: { dataKey: string; name: string; value: number; color: string }[]; label?: string }) {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-lg border bg-popover p-3 shadow-md text-sm">
       <p className="font-medium mb-1">{label}</p>
-      {payload.map((entry: any) => (
+      {payload.map((entry) => (
         <p key={entry.dataKey} style={{ color: entry.color }}>
           {entry.name}: {entry.value > 0 ? "+" : ""}{entry.value.toFixed(2)}%
         </p>
@@ -53,8 +53,9 @@ export function PerformanceChart({ timeSeries, outcomePeriod, bufferStartPct, bu
   const maxY = Math.max(...allValues, outcomePeriod.startingCapNet, 0) + 2;
 
   return (
-    <div className="w-full rounded-lg border bg-card p-4">
+    <div className="w-full rounded-lg border bg-card p-4" role="img" aria-label="Line chart showing fund return vs reference asset return over the outcome period">
       <h3 className="text-sm font-semibold mb-3">Outcome Period Performance</h3>
+      <span className="sr-only">Line chart comparing the buffered fund return against the reference asset return over the current outcome period, with buffer and cap zones shaded.</span>
       <div className="h-[350px] sm:h-[400px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 5, right: 30, left: 10, bottom: 5 }}>

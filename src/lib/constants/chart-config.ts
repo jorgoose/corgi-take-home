@@ -13,9 +13,3 @@ export const SCENARIO_COLORS = {
   refAsset: "#FF5C00",
   fund: "#a8a29e",       // stone-400 (gray)
 } as const;
-
-export const BUFFER_TYPE_COLORS = {
-  standard: "#16a34a",   // green
-  deep: "#2563eb",       // blue
-  full: "#7c3aed",       // purple
-} as const;

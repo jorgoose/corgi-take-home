@@ -1,4 +1,4 @@
-import { BufferType, FundDefinition } from "@/lib/types/fund";
+import { FundDefinition } from "@/lib/types/fund";
 
 interface EducationalCalloutProps {
   fund: FundDefinition;

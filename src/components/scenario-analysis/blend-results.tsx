@@ -28,8 +28,7 @@ const NAME_MAP: Record<string, string> = {
   blendedReturn: "Blended Fund Return",
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function BlendTooltip({ active, payload, label }: any) {
+function BlendTooltip({ active, payload, label }: { active?: boolean; payload?: { dataKey: string; value: number; color: string }[]; label?: string }) {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-lg border bg-popover p-3 shadow-md text-sm">
@@ -44,7 +43,13 @@ function BlendTooltip({ active, payload, label }: any) {
 }
 
 export function BlendResults({ results }: BlendResultsProps) {
-  if (results.length === 0) return null;
+  if (results.length === 0) {
+    return (
+      <p className="text-sm text-muted-foreground text-center py-8">
+        Adjust weights to sum to 100% to see results.
+      </p>
+    );
+  }
 
   const chartData = results.map((r) => ({
     label: `${r.refReturn > 0 ? "+" : ""}${r.refReturn}%`,

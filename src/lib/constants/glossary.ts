@@ -1,9 +1,4 @@
-export interface GlossaryTerm {
-  term: string;
-  definition: string;
-}
-
-export const GLOSSARY_TERMS: GlossaryTerm[] = [
+export const GLOSSARY_TERMS: { term: string; definition: string }[] = [
   { term: "Outcome Period", definition: "The approximately one-year period over which the fund's defined outcome parameters (cap and buffer) apply. At the end of each outcome period, the fund resets with new parameters." },
   { term: "Cap (Gross)", definition: "The maximum potential return of the fund before fees over the outcome period. This represents the upper limit of participation in the reference asset's gains." },
   { term: "Cap (Net)", definition: "The maximum potential return of the fund after deducting the fund's expense ratio. This is the effective cap an investor would experience." },

@@ -1,7 +1,7 @@
 /**
  * Simple string hash (djb2)
  */
-export function hashString(str: string): number {
+function hashString(str: string): number {
   let hash = 5381;
   for (let i = 0; i < str.length; i++) {
     hash = ((hash << 5) + hash + str.charCodeAt(i)) | 0;
@@ -12,7 +12,7 @@ export function hashString(str: string): number {
 /**
  * Mulberry32 PRNG - deterministic random number generator
  */
-export function mulberry32(seed: number): () => number {
+function mulberry32(seed: number): () => number {
   let state = seed;
   return () => {
     state |= 0;

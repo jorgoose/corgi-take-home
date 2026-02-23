@@ -60,8 +60,8 @@ export function useWatchlistStore(): WatchlistStore {
       if (savedWatchlists) setWatchlists(JSON.parse(savedWatchlists));
       const savedAlerts = localStorage.getItem(ALERTS_KEY);
       if (savedAlerts) setAlerts(JSON.parse(savedAlerts));
-    } catch {
-      // ignore parse errors
+    } catch (e) {
+      console.warn("Failed to parse saved watchlist data from localStorage:", e);
     }
     setHydrated(true);
   }, []);
@@ -69,14 +69,14 @@ export function useWatchlistStore(): WatchlistStore {
   // Persist watchlists
   useEffect(() => {
     if (hydrated) {
-      try { localStorage.setItem(WATCHLISTS_KEY, JSON.stringify(watchlists)); } catch { /* storage full / private mode */ }
+      try { localStorage.setItem(WATCHLISTS_KEY, JSON.stringify(watchlists)); } catch (e) { console.warn("Failed to persist watchlists:", e); }
     }
   }, [watchlists, hydrated]);
 
   // Persist alerts
   useEffect(() => {
     if (hydrated) {
-      try { localStorage.setItem(ALERTS_KEY, JSON.stringify(alerts)); } catch { /* storage full / private mode */ }
+      try { localStorage.setItem(ALERTS_KEY, JSON.stringify(alerts)); } catch (e) { console.warn("Failed to persist alerts:", e); }
     }
   }, [alerts, hydrated]);
 

@@ -13,7 +13,7 @@ export function getMetricValue(fund: FundWithCurrentValues, metric: AlertMetric)
   return fund.currentValues[metric];
 }
 
-export function fundTriggersAlert(fund: FundWithCurrentValues, rule: AlertRule): boolean {
+function fundTriggersAlert(fund: FundWithCurrentValues, rule: AlertRule): boolean {
   const value = getMetricValue(fund, rule.metric);
   return rule.condition === "lt" ? value < rule.threshold : value > rule.threshold;
 }

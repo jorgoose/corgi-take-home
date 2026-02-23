@@ -23,6 +23,3 @@ export function getFundByTicker(ticker: string): FundDefinition | undefined {
   return FUND_DEFINITIONS.find((f) => f.ticker === ticker);
 }
 
-export function getFundsByFamily(familyName: string): FundDefinition[] {
-  return FUND_DEFINITIONS.filter((f) => f.fundFamily === familyName);
-}

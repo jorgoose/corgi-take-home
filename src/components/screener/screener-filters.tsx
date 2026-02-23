@@ -1,55 +1,39 @@
 "use client";
 
 import { FilterState, DEFAULT_FILTERS } from "@/lib/types/screener";
-import { ReferenceAsset, BufferType, SeriesMonth } from "@/lib/types/fund";
 import { cn } from "@/lib/utils";
+import {
+  REFERENCE_ASSET_OPTIONS,
+  BUFFER_TYPE_OPTIONS,
+  SERIES_MONTH_OPTIONS,
+  toggleAsset,
+  toggleBufferType,
+  toggleSeries,
+  isDefaultFilters,
+} from "@/lib/constants/filter-options";
 
 interface ScreenerFiltersProps {
   filters: FilterState;
   onChange: (filters: FilterState) => void;
 }
 
-const REFERENCE_ASSETS: ReferenceAsset[] = ["QQQ", "IWM", "SPY", "EFA", "EEM"];
-const BUFFER_TYPES: { value: BufferType; label: string }[] = [
-  { value: "standard", label: "Standard" },
-  { value: "deep", label: "Deep" },
-  { value: "full", label: "Full" },
-];
-const SERIES_MONTHS: SeriesMonth[] = ["May", "Jun", "Jul", "Aug"];
-
 export function ScreenerFilters({ filters, onChange }: ScreenerFiltersProps) {
-  function toggleAsset(asset: ReferenceAsset) {
-    const current = filters.referenceAssets;
-    const next = current.includes(asset)
-      ? current.filter((a) => a !== asset)
-      : [...current, asset];
-    if (next.length === 0) return; // Don't allow empty
-    onChange({ ...filters, referenceAssets: next });
+  function handleToggleAsset(asset: typeof REFERENCE_ASSET_OPTIONS[number]["value"]) {
+    const next = toggleAsset(filters, asset);
+    if (next) onChange(next);
   }
 
-  function toggleBufferType(type: BufferType) {
-    const current = filters.bufferTypes;
-    const next = current.includes(type)
-      ? current.filter((t) => t !== type)
-      : [...current, type];
-    if (next.length === 0) return;
-    onChange({ ...filters, bufferTypes: next });
+  function handleToggleBuffer(type: typeof BUFFER_TYPE_OPTIONS[number]["value"]) {
+    const next = toggleBufferType(filters, type);
+    if (next) onChange(next);
   }
 
-  function toggleSeries(month: SeriesMonth) {
-    const current = filters.seriesMonths;
-    const next = current.includes(month)
-      ? current.filter((m) => m !== month)
-      : [...current, month];
-    if (next.length === 0) return;
-    onChange({ ...filters, seriesMonths: next });
+  function handleToggleSeries(month: typeof SERIES_MONTH_OPTIONS[number]) {
+    const next = toggleSeries(filters, month);
+    if (next) onChange(next);
   }
 
-  function resetFilters() {
-    onChange({ ...DEFAULT_FILTERS });
-  }
-
-  const isDefault = JSON.stringify(filters) === JSON.stringify(DEFAULT_FILTERS);
+  const isDefault = isDefaultFilters(filters);
 
   return (
     <div className="space-y-4 rounded-lg border bg-card p-4">
@@ -57,20 +41,26 @@ export function ScreenerFilters({ filters, onChange }: ScreenerFiltersProps) {
       <div>
         <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Reference Asset</label>
         <div className="flex flex-wrap gap-1.5">
-          {REFERENCE_ASSETS.map((asset) => (
-            <button
-              key={asset}
-              onClick={() => toggleAsset(asset)}
-              className={cn(
-                "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
-                filters.referenceAssets.includes(asset)
-                  ? "bg-foreground text-background border-foreground"
-                  : "bg-background text-muted-foreground border-input hover:bg-muted"
-              )}
-            >
-              {asset}
-            </button>
-          ))}
+          {REFERENCE_ASSET_OPTIONS.map(({ value }) => {
+            const selected = filters.referenceAssets.includes(value);
+            const isLastSelected = selected && filters.referenceAssets.length === 1;
+            return (
+              <button
+                key={value}
+                onClick={() => handleToggleAsset(value)}
+                disabled={isLastSelected}
+                className={cn(
+                  "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
+                  selected
+                    ? "bg-foreground text-background border-foreground"
+                    : "bg-background text-muted-foreground border-input hover:bg-muted",
+                  isLastSelected && "opacity-50 cursor-not-allowed"
+                )}
+              >
+                {value}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -78,20 +68,26 @@ export function ScreenerFilters({ filters, onChange }: ScreenerFiltersProps) {
       <div>
         <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Buffer Type</label>
         <div className="flex flex-wrap gap-1.5">
-          {BUFFER_TYPES.map(({ value, label }) => (
-            <button
-              key={value}
-              onClick={() => toggleBufferType(value)}
-              className={cn(
-                "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
-                filters.bufferTypes.includes(value)
-                  ? "bg-foreground text-background border-foreground"
-                  : "bg-background text-muted-foreground border-input hover:bg-muted"
-              )}
-            >
-              {label}
-            </button>
-          ))}
+          {BUFFER_TYPE_OPTIONS.map(({ value, label }) => {
+            const selected = filters.bufferTypes.includes(value);
+            const isLastSelected = selected && filters.bufferTypes.length === 1;
+            return (
+              <button
+                key={value}
+                onClick={() => handleToggleBuffer(value)}
+                disabled={isLastSelected}
+                className={cn(
+                  "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
+                  selected
+                    ? "bg-foreground text-background border-foreground"
+                    : "bg-background text-muted-foreground border-input hover:bg-muted",
+                  isLastSelected && "opacity-50 cursor-not-allowed"
+                )}
+              >
+                {label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -99,20 +95,26 @@ export function ScreenerFilters({ filters, onChange }: ScreenerFiltersProps) {
       <div>
         <label className="text-xs font-medium text-muted-foreground mb-1.5 block">Series Month</label>
         <div className="flex flex-wrap gap-1.5">
-          {SERIES_MONTHS.map((month) => (
-            <button
-              key={month}
-              onClick={() => toggleSeries(month)}
-              className={cn(
-                "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
-                filters.seriesMonths.includes(month)
-                  ? "bg-foreground text-background border-foreground"
-                  : "bg-background text-muted-foreground border-input hover:bg-muted"
-              )}
-            >
-              {month}
-            </button>
-          ))}
+          {SERIES_MONTH_OPTIONS.map((month) => {
+            const selected = filters.seriesMonths.includes(month);
+            const isLastSelected = selected && filters.seriesMonths.length === 1;
+            return (
+              <button
+                key={month}
+                onClick={() => handleToggleSeries(month)}
+                disabled={isLastSelected}
+                className={cn(
+                  "rounded-full border px-3 py-1 text-xs font-medium transition-colors",
+                  selected
+                    ? "bg-foreground text-background border-foreground"
+                    : "bg-background text-muted-foreground border-input hover:bg-muted",
+                  isLastSelected && "opacity-50 cursor-not-allowed"
+                )}
+              >
+                {month}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -154,7 +156,7 @@ export function ScreenerFilters({ filters, onChange }: ScreenerFiltersProps) {
       {/* Reset button */}
       {!isDefault && (
         <button
-          onClick={resetFilters}
+          onClick={() => onChange({ ...DEFAULT_FILTERS })}
           className="text-xs text-[#FF5C00] hover:underline font-medium"
         >
           Reset Filters

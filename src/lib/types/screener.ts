@@ -12,11 +12,9 @@ export interface FilterState {
   remainingCapMax: number;
 }
 
-export type SortDirection = "asc" | "desc";
-
 export interface SortConfig {
   column: string;
-  direction: SortDirection;
+  direction: "asc" | "desc";
 }
 
 export const DEFAULT_FILTERS: FilterState = {

@@ -1,62 +1,38 @@
 "use client";
 
 import { FilterState, DEFAULT_FILTERS } from "@/lib/types/screener";
-import { ReferenceAsset, BufferType, SeriesMonth } from "@/lib/types/fund";
+import {
+  REFERENCE_ASSET_OPTIONS,
+  BUFFER_TYPE_OPTIONS,
+  SERIES_MONTH_OPTIONS,
+  toggleAsset,
+  toggleBufferType,
+  toggleSeries,
+  isDefaultFilters,
+} from "@/lib/constants/filter-options";
 
 interface ScreenerSidebarProps {
   filters: FilterState;
   onChange: (filters: FilterState) => void;
 }
 
-const REFERENCE_ASSETS: { value: ReferenceAsset; label: string }[] = [
-  { value: "QQQ", label: "QQQ — Invesco QQQ Trust" },
-  { value: "IWM", label: "IWM — iShares Russell 2000" },
-  { value: "SPY", label: "SPY — SPDR S&P 500" },
-  { value: "EFA", label: "EFA — iShares MSCI EAFE" },
-  { value: "EEM", label: "EEM — iShares MSCI EM" },
-];
-
-const BUFFER_TYPES: { value: BufferType; label: string }[] = [
-  { value: "standard", label: "Standard Buffer" },
-  { value: "deep", label: "Deep Buffer" },
-  { value: "full", label: "Full Protection" },
-];
-
-const SERIES_MONTHS: SeriesMonth[] = ["May", "Jun", "Jul", "Aug"];
-
 export function ScreenerSidebar({ filters, onChange }: ScreenerSidebarProps) {
-  function toggleAsset(asset: ReferenceAsset) {
-    const current = filters.referenceAssets;
-    const next = current.includes(asset)
-      ? current.filter((a) => a !== asset)
-      : [...current, asset];
-    if (next.length === 0) return;
-    onChange({ ...filters, referenceAssets: next });
+  function handleToggleAsset(asset: typeof REFERENCE_ASSET_OPTIONS[number]["value"]) {
+    const next = toggleAsset(filters, asset);
+    if (next) onChange(next);
   }
 
-  function toggleBuffer(type: BufferType) {
-    const current = filters.bufferTypes;
-    const next = current.includes(type)
-      ? current.filter((t) => t !== type)
-      : [...current, type];
-    if (next.length === 0) return;
-    onChange({ ...filters, bufferTypes: next });
+  function handleToggleBuffer(type: typeof BUFFER_TYPE_OPTIONS[number]["value"]) {
+    const next = toggleBufferType(filters, type);
+    if (next) onChange(next);
   }
 
-  function toggleSeries(month: SeriesMonth) {
-    const current = filters.seriesMonths;
-    const next = current.includes(month)
-      ? current.filter((m) => m !== month)
-      : [...current, month];
-    if (next.length === 0) return;
-    onChange({ ...filters, seriesMonths: next });
+  function handleToggleSeries(month: typeof SERIES_MONTH_OPTIONS[number]) {
+    const next = toggleSeries(filters, month);
+    if (next) onChange(next);
   }
 
-  function resetFilters() {
-    onChange({ ...DEFAULT_FILTERS });
-  }
-
-  const isDefault = JSON.stringify(filters) === JSON.stringify(DEFAULT_FILTERS);
+  const isDefault = isDefaultFilters(filters);
 
   return (
     <div className="space-y-5">
@@ -66,19 +42,24 @@ export function ScreenerSidebar({ filters, onChange }: ScreenerSidebarProps) {
           Reference Assets
         </label>
         <div className="space-y-1.5">
-          {REFERENCE_ASSETS.map(({ value, label }) => (
-            <label key={value} className="flex items-center gap-2 cursor-pointer group">
-              <input
-                type="checkbox"
-                checked={filters.referenceAssets.includes(value)}
-                onChange={() => toggleAsset(value)}
-                className="accent-[#FF5C00] h-3.5 w-3.5"
-              />
-              <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                {label}
-              </span>
-            </label>
-          ))}
+          {REFERENCE_ASSET_OPTIONS.map(({ value, label }) => {
+            const checked = filters.referenceAssets.includes(value);
+            const isLastSelected = checked && filters.referenceAssets.length === 1;
+            return (
+              <label key={value} className={`flex items-center gap-2 group ${isLastSelected ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}>
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  disabled={isLastSelected}
+                  onChange={() => handleToggleAsset(value)}
+                  className="accent-[#FF5C00] h-3.5 w-3.5"
+                />
+                <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+                  {label}
+                </span>
+              </label>
+            );
+          })}
         </div>
       </div>
 
@@ -88,19 +69,24 @@ export function ScreenerSidebar({ filters, onChange }: ScreenerSidebarProps) {
           Strategies
         </label>
         <div className="space-y-1.5">
-          {BUFFER_TYPES.map(({ value, label }) => (
-            <label key={value} className="flex items-center gap-2 cursor-pointer group">
-              <input
-                type="checkbox"
-                checked={filters.bufferTypes.includes(value)}
-                onChange={() => toggleBuffer(value)}
-                className="accent-[#FF5C00] h-3.5 w-3.5"
-              />
-              <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                {label}
-              </span>
-            </label>
-          ))}
+          {BUFFER_TYPE_OPTIONS.map(({ value, label }) => {
+            const checked = filters.bufferTypes.includes(value);
+            const isLastSelected = checked && filters.bufferTypes.length === 1;
+            return (
+              <label key={value} className={`flex items-center gap-2 group ${isLastSelected ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}>
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  disabled={isLastSelected}
+                  onChange={() => handleToggleBuffer(value)}
+                  className="accent-[#FF5C00] h-3.5 w-3.5"
+                />
+                <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+                  {label}
+                </span>
+              </label>
+            );
+          })}
         </div>
       </div>
 
@@ -110,19 +96,24 @@ export function ScreenerSidebar({ filters, onChange }: ScreenerSidebarProps) {
           Series Type
         </label>
         <div className="space-y-1.5">
-          {SERIES_MONTHS.map((month) => (
-            <label key={month} className="flex items-center gap-2 cursor-pointer group">
-              <input
-                type="checkbox"
-                checked={filters.seriesMonths.includes(month)}
-                onChange={() => toggleSeries(month)}
-                className="accent-[#FF5C00] h-3.5 w-3.5"
-              />
-              <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                {month} Series
-              </span>
-            </label>
-          ))}
+          {SERIES_MONTH_OPTIONS.map((month) => {
+            const checked = filters.seriesMonths.includes(month);
+            const isLastSelected = checked && filters.seriesMonths.length === 1;
+            return (
+              <label key={month} className={`flex items-center gap-2 group ${isLastSelected ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}>
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  disabled={isLastSelected}
+                  onChange={() => handleToggleSeries(month)}
+                  className="accent-[#FF5C00] h-3.5 w-3.5"
+                />
+                <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors">
+                  {month} Series
+                </span>
+              </label>
+            );
+          })}
         </div>
       </div>
 
@@ -237,7 +228,7 @@ export function ScreenerSidebar({ filters, onChange }: ScreenerSidebarProps) {
       {/* Reset button */}
       <div className="pt-1">
         <button
-          onClick={resetFilters}
+          onClick={() => onChange({ ...DEFAULT_FILTERS })}
           disabled={isDefault}
           className="w-full rounded-md border border-input px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >

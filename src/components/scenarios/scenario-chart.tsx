@@ -10,7 +10,6 @@ import {
   ReferenceLine,
   ResponsiveContainer,
   Legend,
-  Cell,
   LabelList,
 } from "recharts";
 import { ScenarioResult } from "@/lib/types/scenarios";
@@ -23,12 +22,12 @@ interface ScenarioChartProps {
   bufferEndPct: number;
 }
 
-function CustomTooltip({ active, payload, label }: any) {
+function CustomTooltip({ active, payload, label }: { active?: boolean; payload?: { dataKey: string; name: string; value: number; color: string; fill?: string }[]; label?: string }) {
   if (!active || !payload?.length) return null;
   return (
     <div className="rounded-lg border bg-popover p-3 shadow-md text-sm">
       <p className="font-medium mb-1">Scenario: {label}%</p>
-      {payload.map((entry: any) => (
+      {payload.map((entry) => (
         <p key={entry.dataKey} style={{ color: entry.fill || entry.color }}>
           {entry.name}: {entry.value > 0 ? "+" : ""}{entry.value.toFixed(2)}%
         </p>
@@ -49,8 +48,9 @@ export function ScenarioChart({ scenarios, cap, bufferStartPct, bufferEndPct }: 
   const maxY = Math.max(...allValues, cap) + 5;
 
   return (
-    <div className="w-full rounded-lg border bg-card p-4">
+    <div className="w-full rounded-lg border bg-card p-4" role="img" aria-label="Bar chart showing hypothetical fund returns vs reference asset returns across scenarios">
       <h3 className="text-sm font-semibold mb-3">Hypothetical Scenario Analysis</h3>
+      <span className="sr-only">Bar chart comparing hypothetical fund returns against reference asset returns for various market scenarios, with cap and buffer reference lines.</span>
       <div className="h-[350px] sm:h-[400px]">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 15, right: 30, left: 10, bottom: 5 }} barGap={2}>

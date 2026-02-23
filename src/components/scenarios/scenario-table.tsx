@@ -10,8 +10,8 @@ function formatReturn(value: number): string {
 }
 
 function returnColor(value: number): string {
-  if (value > 0) return "text-green-700";
-  if (value < 0) return "text-red-600";
+  if (value > 0) return "text-green-400";
+  if (value < 0) return "text-red-400";
   return "text-muted-foreground";
 }
 
@@ -38,7 +38,7 @@ export function ScenarioTable({ scenarios }: ScenarioTableProps) {
                 <td className={cn("px-4 py-2 text-right font-mono", returnColor(s.fundReturn))}>
                   {formatReturn(s.fundReturn)}
                 </td>
-                <td className={cn("px-4 py-2 text-right font-mono", diff >= 0 ? "text-green-700" : "text-red-600")}>
+                <td className={cn("px-4 py-2 text-right font-mono", diff >= 0 ? "text-green-400" : "text-red-400")}>
                   {formatReturn(diff)}
                 </td>
                 <td className="px-4 py-2 text-muted-foreground hidden sm:table-cell">
