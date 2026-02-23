@@ -1,5 +1,5 @@
 import { FundWithCurrentValues } from "../types/fund";
-import { formatPercent, formatDate, formatDaysRemaining } from "./format";
+import { formatPercent, formatDate } from "./format";
 
 export function exportFundsToCSV(funds: FundWithCurrentValues[], filename: string = "corgi-buffer-etf-screener.csv"): void {
   const headers = [

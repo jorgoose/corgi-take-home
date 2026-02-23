@@ -3,9 +3,8 @@
 import Link from "next/link";
 import { FundWithCurrentValues } from "@/lib/types/fund";
 import { SortConfig } from "@/lib/types/screener";
-import { BufferTypeBadge } from "@/components/fund/buffer-type-badge";
 import { ReferenceAssetBadge } from "@/components/fund/reference-asset-badge";
-import { formatPercentUnsigned, formatPercent, formatDate } from "@/lib/utils/format";
+import { formatPercentUnsigned } from "@/lib/utils/format";
 import { cn } from "@/lib/utils";
 
 interface ScreenerTableProps {
@@ -60,7 +59,7 @@ export function ScreenerTable({ funds, sort, onSort, totalCount, asOfDate }: Scr
           Buffer Funds As of {asOfDate}
         </span>
         <span className="rounded-full bg-white/20 px-3 py-0.5 text-xs font-bold text-white">
-          {funds.length} Matching Fund{funds.length !== 1 ? "s" : ""}
+          Showing {funds.length} of {totalCount} Fund{totalCount !== 1 ? "s" : ""}
         </span>
       </div>
 
@@ -161,6 +160,11 @@ export function ScreenerTable({ funds, sort, onSort, totalCount, asOfDate }: Scr
             </div>
           </div>
         ))}
+        {funds.length === 0 && (
+          <div className="rounded-lg border bg-card p-8 text-center text-muted-foreground">
+            No funds match the current filters.
+          </div>
+        )}
       </div>
     </div>
   );

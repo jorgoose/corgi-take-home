@@ -42,8 +42,8 @@ export function PerformanceChart({ timeSeries, outcomePeriod, bufferStartPct, bu
   const step = Math.max(1, Math.floor(timeSeries.length / 60));
   const data = timeSeries.filter((_, i) => i % step === 0 || i === timeSeries.length - 1).map((p) => ({
     date: formatDateShort(p.date),
-    "Fund Return": p.fundReturn,
-    "Ref Asset Return": p.refAssetReturn,
+    "Fund NAV Return": p.fundReturn,
+    "Reference ETF Return": p.refAssetReturn,
   }));
 
   // Calculate y-axis domain
@@ -79,12 +79,14 @@ export function PerformanceChart({ timeSeries, outcomePeriod, bufferStartPct, bu
               strokeDasharray="6 3"
               label={{ value: `Cap ${outcomePeriod.startingCapNet.toFixed(1)}%`, position: "right", fontSize: 10, fill: CHART_COLORS.cap }}
             />
-            <ReferenceLine
-              y={bufferStartPct}
-              stroke={CHART_COLORS.bufferStart}
-              strokeDasharray="6 3"
-              label={{ value: `Buffer Start ${bufferStartPct}%`, position: "right", fontSize: 10, fill: CHART_COLORS.bufferStart }}
-            />
+            {bufferStartPct !== 0 && (
+              <ReferenceLine
+                y={bufferStartPct}
+                stroke={CHART_COLORS.bufferStart}
+                strokeDasharray="6 3"
+                label={{ value: `Buffer Start ${bufferStartPct}%`, position: "right", fontSize: 10, fill: CHART_COLORS.bufferStart }}
+              />
+            )}
             <ReferenceLine
               y={bufferEndPct}
               stroke={CHART_COLORS.bufferEnd}
@@ -96,7 +98,7 @@ export function PerformanceChart({ timeSeries, outcomePeriod, bufferStartPct, bu
             {/* Data lines */}
             <Line
               type="monotone"
-              dataKey="Fund Return"
+              dataKey="Fund NAV Return"
               stroke={CHART_COLORS.fund}
               strokeWidth={2}
               dot={false}
@@ -104,7 +106,7 @@ export function PerformanceChart({ timeSeries, outcomePeriod, bufferStartPct, bu
             />
             <Line
               type="monotone"
-              dataKey="Ref Asset Return"
+              dataKey="Reference ETF Return"
               stroke={CHART_COLORS.refAsset}
               strokeWidth={2}
               dot={false}

@@ -8,9 +8,9 @@ import { calculateFundReturnPct, getScenarioNote } from "./buffer-calculations";
 function getDefaultScenarios(bufferType: BufferType, capPct: number, bufferStartPct: number, bufferEndPct: number): number[] {
   switch (bufferType) {
     case "standard":
-      return [30, 20, capPct, 10, 5, 0, bufferEndPct / 2, bufferEndPct, bufferEndPct * 1.5, -50];
+      return [30, 20, capPct, 10, 5, 0, bufferEndPct / 2, bufferEndPct, -25, -50];
     case "deep":
-      return [30, 20, capPct, 10, 5, 0, bufferStartPct / 2, bufferStartPct, (bufferStartPct + bufferEndPct) / 2, bufferEndPct, -50];
+      return [30, 20, capPct, 10, 5, 0, -3, bufferStartPct, -15, -25, bufferEndPct, -50];
     case "full":
       return [30, 20, capPct, 5, 0, -10, -25, -50, -75, -100];
     default:

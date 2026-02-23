@@ -21,8 +21,8 @@ export function getScenarioData(ticker: string, mode: ScenarioMode = "inception"
     : {
         mode,
         cap: fund.currentValues.remainingCapNet,
-        bufferStartPct: fund.bufferStartPct,
-        bufferEndPct: fund.bufferEndPct,
+        bufferStartPct: -fund.currentValues.downsideBeforeBufferGross,
+        bufferEndPct: -(fund.currentValues.downsideBeforeBufferGross + fund.currentValues.remainingBufferGross),
         remainingBuffer: fund.currentValues.remainingBufferNet,
         downsideBeforeBuffer: fund.currentValues.downsideBeforeBuffer,
       };
@@ -40,14 +40,19 @@ export function getCustomScenario(
   const fund = getFundByTicker(ticker);
   if (!fund) return null;
 
-  const cap = mode === "inception"
-    ? fund.outcomePeriod.startingCapNet
-    : fund.currentValues.remainingCapNet;
+  if (mode === "inception") {
+    return calculateCustomScenario(
+      refReturnPct,
+      fund.outcomePeriod.startingCapNet,
+      fund.bufferStartPct,
+      fund.bufferEndPct
+    );
+  }
 
   return calculateCustomScenario(
     refReturnPct,
-    cap,
-    fund.bufferStartPct,
-    fund.bufferEndPct
+    fund.currentValues.remainingCapNet,
+    -fund.currentValues.downsideBeforeBufferGross,
+    -(fund.currentValues.downsideBeforeBufferGross + fund.currentValues.remainingBufferGross)
   );
 }
