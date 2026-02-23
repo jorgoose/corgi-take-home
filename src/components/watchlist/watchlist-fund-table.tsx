@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FundWithCurrentValues } from "@/lib/types/fund";
 import { BufferTypeBadge } from "@/components/fund/buffer-type-badge";
 import { ReferenceAssetBadge } from "@/components/fund/reference-asset-badge";
-import { formatPercent, formatDaysRemaining } from "@/lib/utils/format";
+import { formatPercentUnsigned, formatDaysRemaining } from "@/lib/utils/format";
 
 interface WatchlistFundTableProps {
   funds: FundWithCurrentValues[];
@@ -52,10 +52,10 @@ export function WatchlistFundTable({ funds, onRemove }: WatchlistFundTableProps)
                 <BufferTypeBadge type={fund.bufferType} />
               </td>
               <td className="px-3 py-2 text-right font-mono text-xs">
-                {formatPercent(fund.currentValues.remainingCapNet)}
+                {formatPercentUnsigned(fund.currentValues.remainingCapNet)}
               </td>
               <td className="px-3 py-2 text-right font-mono text-xs">
-                {formatPercent(fund.currentValues.remainingBufferNet)}
+                {formatPercentUnsigned(fund.currentValues.remainingBufferNet)}
               </td>
               <td className="px-3 py-2 text-right font-mono text-xs">
                 {formatDaysRemaining(fund.currentValues.remainingOutcomePeriodDays)}

@@ -1,4 +1,14 @@
 export function formatPercent(value: number, decimals: number = 2): string {
+  // Fix negative zero: -0.001 rounds to "-0.00" with toFixed
+  const rounded = Number(value.toFixed(decimals));
+  if (rounded === 0) return `0.${"0".repeat(decimals)}%`;
+  return `${value.toFixed(decimals)}%`;
+}
+
+/** Like formatPercent but with explicit "+" prefix for positive values (for scenario/return contexts) */
+export function formatPercentSigned(value: number, decimals: number = 2): string {
+  const rounded = Number(value.toFixed(decimals));
+  if (rounded === 0) return `0.${"0".repeat(decimals)}%`;
   const sign = value > 0 ? "+" : "";
   return `${sign}${value.toFixed(decimals)}%`;
 }

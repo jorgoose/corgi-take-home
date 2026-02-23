@@ -1,7 +1,7 @@
 "use client";
 
 import { MultiFundScenarioRow } from "@/lib/api/scenario-analysis";
-import { formatPercent } from "@/lib/utils/format";
+import { formatPercentSigned } from "@/lib/utils/format";
 import { BufferTypeBadge } from "@/components/fund/buffer-type-badge";
 import { ReferenceAssetBadge } from "@/components/fund/reference-asset-badge";
 
@@ -87,7 +87,7 @@ export function ScenarioHeatmap({
                       selectedScenario === ret ? "ring-1 ring-[#FF5C00]/40" : ""
                     }`}
                   >
-                    {formatPercent(result.fundReturn)}
+                    {formatPercentSigned(result.fundReturn)}
                   </td>
                 );
               })}

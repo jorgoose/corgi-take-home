@@ -13,7 +13,7 @@ import {
 } from "recharts";
 import { MultiFundScenarioRow } from "@/lib/api/scenario-analysis";
 import { CHART_COLORS } from "@/lib/constants/chart-config";
-import { formatPercent } from "@/lib/utils/format";
+import { formatPercentSigned } from "@/lib/utils/format";
 
 interface ScenarioBarChartProps {
   rows: MultiFundScenarioRow[];
@@ -26,7 +26,7 @@ function BarTooltip({ active, payload, label }: any) {
   return (
     <div className="rounded-lg border bg-popover p-3 shadow-md text-sm">
       <p className="font-mono font-medium mb-1">{label}</p>
-      <p>Fund Return: {formatPercent(payload[0].value)}</p>
+      <p>Fund Return: {formatPercentSigned(payload[0].value)}</p>
     </div>
   );
 }
@@ -54,7 +54,7 @@ export function ScenarioBarChart({ rows, selectedScenario }: ScenarioBarChartPro
           <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" horizontal={false} />
           <XAxis
             type="number"
-            tickFormatter={(v: number) => formatPercent(v)}
+            tickFormatter={(v: number) => formatPercentSigned(v)}
             tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
           />
           <YAxis
@@ -71,7 +71,7 @@ export function ScenarioBarChart({ rows, selectedScenario }: ScenarioBarChartPro
             strokeDasharray="4 4"
             strokeWidth={1.5}
             label={{
-              value: `Ref: ${formatPercent(selectedScenario)}`,
+              value: `Ref: ${formatPercentSigned(selectedScenario)}`,
               position: "top",
               fill: CHART_COLORS.refAsset,
               fontSize: 11,

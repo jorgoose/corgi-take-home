@@ -14,7 +14,7 @@ import {
 } from "recharts";
 import { BlendedScenarioResult } from "@/lib/api/scenario-analysis";
 import { CHART_COLORS, SCENARIO_COLORS } from "@/lib/constants/chart-config";
-import { formatPercent } from "@/lib/utils/format";
+import { formatPercentSigned } from "@/lib/utils/format";
 import { SeriesMonth } from "@/lib/types/fund";
 
 interface BlendResultsProps {
@@ -36,7 +36,7 @@ function BlendTooltip({ active, payload, label }: any) {
       <p className="font-medium mb-1">{label}</p>
       {payload.map((entry: { dataKey: string; value: number; color: string }) => (
         <p key={entry.dataKey} style={{ color: entry.color }}>
-          {NAME_MAP[entry.dataKey] ?? entry.dataKey}: {formatPercent(entry.value)}
+          {NAME_MAP[entry.dataKey] ?? entry.dataKey}: {formatPercentSigned(entry.value)}
         </p>
       ))}
     </div>
@@ -104,11 +104,11 @@ export function BlendResults({ results }: BlendResultsProps) {
             {results.map((row) => (
               <tr key={row.refReturn} className="border-b last:border-0 hover:bg-muted/30">
                 <td className="px-3 py-2 font-mono text-xs">
-                  {formatPercent(row.refReturn)}
+                  {formatPercentSigned(row.refReturn)}
                 </td>
                 {MONTHS.map((m) => (
                   <td key={m} className="px-3 py-2 text-center font-mono text-xs">
-                    {row.seriesReturns[m] !== undefined ? formatPercent(row.seriesReturns[m]) : "—"}
+                    {row.seriesReturns[m] !== undefined ? formatPercentSigned(row.seriesReturns[m]) : "—"}
                   </td>
                 ))}
                 <td
@@ -116,7 +116,7 @@ export function BlendResults({ results }: BlendResultsProps) {
                     row.blendedFundReturn >= 0 ? "text-green-400" : "text-red-400"
                   }`}
                 >
-                  {formatPercent(row.blendedFundReturn)}
+                  {formatPercentSigned(row.blendedFundReturn)}
                 </td>
               </tr>
             ))}
