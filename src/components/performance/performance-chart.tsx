@@ -8,6 +8,7 @@ import {
   CartesianGrid,
   Tooltip,
   ReferenceLine,
+  ReferenceArea,
   ResponsiveContainer,
   Legend,
 } from "recharts";
@@ -71,6 +72,22 @@ export function PerformanceChart({ timeSeries, outcomePeriod, bufferStartPct, bu
             />
             <Tooltip content={<CustomTooltip />} />
             <Legend />
+
+            {/* Shaded zones (matching FT reference) */}
+            <ReferenceArea
+              y1={bufferStartPct}
+              y2={outcomePeriod.startingCapNet}
+              fill="#94a3b8"
+              fillOpacity={0.08}
+              ifOverflow="hidden"
+            />
+            <ReferenceArea
+              y1={bufferEndPct}
+              y2={bufferStartPct}
+              fill="#f97316"
+              fillOpacity={0.08}
+              ifOverflow="hidden"
+            />
 
             {/* Reference lines */}
             <ReferenceLine
