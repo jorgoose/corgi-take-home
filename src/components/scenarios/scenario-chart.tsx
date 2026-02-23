@@ -52,7 +52,7 @@ export function ScenarioChart({ scenarios, cap, bufferStartPct, bufferEndPct }: 
       <h3 className="text-sm font-semibold mb-3">Hypothetical Scenario Analysis</h3>
       <div className="h-[350px] sm:h-[400px]">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} margin={{ top: 5, right: 20, left: 10, bottom: 5 }} barGap={2}>
+          <BarChart data={data} margin={{ top: 5, right: 30, left: 10, bottom: 5 }} barGap={2}>
             <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
             <XAxis dataKey="scenario" tick={{ fontSize: 11 }} />
             <YAxis

@@ -50,7 +50,7 @@ export function ScenarioBarChart({ rows, selectedScenario }: ScenarioBarChartPro
         </span>
       </h3>
       <ResponsiveContainer width="100%" height={Math.max(300, data.length * 28)}>
-        <BarChart data={data} layout="vertical" margin={{ top: 0, right: 20, bottom: 0, left: 50 }}>
+        <BarChart data={data} layout="vertical" margin={{ top: 0, right: 30, bottom: 0, left: 50 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" horizontal={false} />
           <XAxis
             type="number"

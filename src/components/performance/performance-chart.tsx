@@ -57,7 +57,7 @@ export function PerformanceChart({ timeSeries, outcomePeriod, bufferStartPct, bu
       <h3 className="text-sm font-semibold mb-3">Outcome Period Performance</h3>
       <div className="h-[350px] sm:h-[400px]">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+          <LineChart data={data} margin={{ top: 5, right: 30, left: 10, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
             <XAxis
               dataKey="date"

@@ -65,7 +65,7 @@ export function ScreenerTable({ funds, sort, onSort, totalCount, asOfDate }: Scr
 
       {/* Desktop table */}
       <div className="hidden md:block overflow-x-auto rounded-b-lg border border-t-0">
-        <table className="w-full text-sm">
+        <table className="w-full min-w-[720px] text-sm">
           <thead>
             <tr className="bg-muted/50 border-b">
               {COLUMNS.map((col) => (
