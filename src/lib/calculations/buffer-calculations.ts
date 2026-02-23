@@ -91,8 +91,10 @@ export function getScenarioNote(
     }
     return "Buffer absorbing";
   }
+  const bufferSize = Math.abs(bufferEndPct - bufferStartPct);
+  const investorLoss = Math.abs(fundReturnPct);
   if (refReturnPct === bufferEndPct) {
-    return "Buffer fully consumed";
+    return `Buffer absorbs ${bufferSize.toFixed(0)}%, investor bears ${investorLoss.toFixed(0)}%`;
   }
-  return "Beyond buffer";
+  return `Beyond buffer: absorbs ${bufferSize.toFixed(0)}%, investor bears ${investorLoss.toFixed(0)}%`;
 }

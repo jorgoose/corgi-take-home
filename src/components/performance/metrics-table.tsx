@@ -22,21 +22,21 @@ export function MetricsTable({ fund, outcomePeriod, currentValues }: MetricsTabl
     { label: "Starting Fund Value", value: formatCurrency(outcomePeriod.startingFundNav) },
     { label: "Fund Cap Value", value: formatCurrency(outcomePeriod.fundCapValue) },
     { label: "Reference Asset Cap", value: formatPercentUnsigned(outcomePeriod.refAssetCap) },
-    { label: "Starting Ref Asset Value", value: formatCurrency(outcomePeriod.startingRefAssetPrice) },
-    { label: "Ref Asset Cap Value", value: formatCurrency(outcomePeriod.refAssetCapValue) },
-    { label: "Buffer Start % / Ref Asset Value", value: `${formatPercentUnsigned(Math.abs(fund.bufferStartPct))} / ${formatCurrency(outcomePeriod.bufferStartRefValue)}` },
-    { label: "Buffer End % / Ref Asset Value", value: `${formatPercent(fund.bufferEndPct)} / ${formatCurrency(outcomePeriod.bufferEndRefValue)}` },
+    { label: "Starting Reference Asset Value", value: formatCurrency(outcomePeriod.startingRefAssetPrice) },
+    { label: "Reference Asset Cap Value", value: formatCurrency(outcomePeriod.refAssetCapValue) },
+    { label: "Buffer Start % / Reference Asset Value", value: `${formatPercentUnsigned(Math.abs(fund.bufferStartPct))} / ${formatCurrency(outcomePeriod.bufferStartRefValue)}` },
+    { label: "Buffer End % / Reference Asset Value", value: `${formatPercent(fund.bufferEndPct)} / ${formatCurrency(outcomePeriod.bufferEndRefValue)}` },
   ];
 
   const currentMetrics: MetricRow[] = [
     { label: "Remaining Outcome Period", value: formatDaysRemaining(currentValues.remainingOutcomePeriodDays) },
     { label: "Fund Value / Return", value: `${formatCurrency(currentValues.fundNav)} / ${formatPercent(currentValues.fundReturnPtd)}` },
-    { label: "Ref Asset Value / Return", value: `${formatCurrency(currentValues.refAssetPrice)} / ${formatPercent(currentValues.refAssetReturnPtd)}` },
+    { label: "Reference Asset Value / Return", value: `${formatCurrency(currentValues.refAssetPrice)} / ${formatPercent(currentValues.refAssetReturnPtd)}` },
     { label: "Remaining Cap (Net)", value: `${formatPercentUnsigned(currentValues.remainingCapGross)} (${formatPercentUnsigned(currentValues.remainingCapNet)})` },
-    { label: "Ref Asset Return to Realize Cap", value: formatPercent(currentValues.refAssetReturnToCap) },
+    { label: "Reference Asset Return to Realize the Cap", value: formatPercent(currentValues.refAssetReturnToCap) },
     { label: "Remaining Buffer (Net)", value: `${formatPercentUnsigned(currentValues.remainingBufferGross)} (${formatPercentUnsigned(currentValues.remainingBufferNet)})` },
     { label: "Downside Before Buffer (Net)", value: `${formatPercent(-currentValues.downsideBeforeBufferGross)} (${formatPercent(-currentValues.downsideBeforeBuffer)})` },
-    { label: "Ref Asset to Buffer End", value: formatPercent(currentValues.refAssetToBufferEnd) },
+    { label: "Reference Asset to Buffer End", value: formatPercent(currentValues.refAssetToBufferEnd) },
     { label: "Unrealized Option Payoff (Net)", value: `${formatPercent(currentValues.unrealizedOptionPayoffGross)} (${formatPercent(currentValues.unrealizedOptionPayoffNet)})` },
   ];
 

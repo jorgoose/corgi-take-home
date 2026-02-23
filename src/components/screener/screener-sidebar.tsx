@@ -19,7 +19,7 @@ const REFERENCE_ASSETS: { value: ReferenceAsset; label: string }[] = [
 const BUFFER_TYPES: { value: BufferType; label: string }[] = [
   { value: "standard", label: "Standard Buffer" },
   { value: "deep", label: "Deep Buffer" },
-  { value: "full", label: "Full Buffer" },
+  { value: "full", label: "Full Protection" },
 ];
 
 const SERIES_MONTHS: SeriesMonth[] = ["May", "Jun", "Jul", "Aug"];

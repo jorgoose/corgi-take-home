@@ -79,21 +79,19 @@ export function PerformanceChart({ timeSeries, outcomePeriod, bufferStartPct, bu
               strokeDasharray="6 3"
               label={{ value: `Cap ${outcomePeriod.startingCapNet.toFixed(1)}%`, position: "right", fontSize: 10, fill: CHART_COLORS.cap }}
             />
-            {bufferStartPct !== 0 && (
-              <ReferenceLine
-                y={bufferStartPct}
-                stroke={CHART_COLORS.bufferStart}
-                strokeDasharray="6 3"
-                label={{ value: `Buffer Start ${bufferStartPct}%`, position: "right", fontSize: 10, fill: CHART_COLORS.bufferStart }}
-              />
-            )}
+            <ReferenceLine
+              y={bufferStartPct}
+              stroke={CHART_COLORS.bufferStart}
+              strokeDasharray="6 3"
+              label={{ value: `Buffer Start ${bufferStartPct.toFixed(2)}%`, position: "right", fontSize: 10, fill: CHART_COLORS.bufferStart }}
+            />
             <ReferenceLine
               y={bufferEndPct}
               stroke={CHART_COLORS.bufferEnd}
               strokeDasharray="6 3"
               label={{ value: `Buffer End ${bufferEndPct}%`, position: "right", fontSize: 10, fill: CHART_COLORS.bufferEnd }}
             />
-            <ReferenceLine y={0} stroke="#a8a29e" strokeWidth={1} />
+            {bufferStartPct !== 0 && <ReferenceLine y={0} stroke="#a8a29e" strokeWidth={1} />}
 
             {/* Data lines */}
             <Line
