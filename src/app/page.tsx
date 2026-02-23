@@ -26,6 +26,16 @@ export default function HomePage() {
           title="Scenario Visualizer"
           description="Model hypothetical market scenarios across buffer types."
         />
+        <ToolLink
+          href="/tools/scenario-analysis"
+          title="Hypothetical Scenario Analysis"
+          description="Run hypothetical market scenarios across all funds or create blended portfolio views."
+        />
+        <ToolLink
+          href="/tools/watchlist"
+          title="Personal Lists & Alerts"
+          description="Create watchlists and set threshold-based alerts for your funds."
+        />
       </nav>
     </div>
   );
