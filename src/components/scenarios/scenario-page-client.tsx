@@ -43,7 +43,7 @@ export function ScenarioPageClient({ fund }: ScenarioPageClientProps) {
         <div className="rounded-lg border border-amber-500/20 bg-amber-500/10 p-3 text-sm text-amber-400">
           You are viewing outcomes based on current fund values as of {getAsOfDate()}.
           These differ from inception values because {fund.currentValues.remainingOutcomePeriodDays} days remain in the outcome period.
-          {fund.currentValues.remainingBufferNet < fund.bufferSizePct && (
+          {fund.currentValues.remainingBufferGross < fund.bufferSizePct && (
             <span className="font-medium">
               {" "}The fund&apos;s buffer has been partially used. Remaining buffer: {fund.currentValues.remainingBufferNet.toFixed(2)}%.
             </span>

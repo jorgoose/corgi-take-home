@@ -68,12 +68,16 @@ export function useWatchlistStore(): WatchlistStore {
 
   // Persist watchlists
   useEffect(() => {
-    if (hydrated) localStorage.setItem(WATCHLISTS_KEY, JSON.stringify(watchlists));
+    if (hydrated) {
+      try { localStorage.setItem(WATCHLISTS_KEY, JSON.stringify(watchlists)); } catch { /* storage full / private mode */ }
+    }
   }, [watchlists, hydrated]);
 
   // Persist alerts
   useEffect(() => {
-    if (hydrated) localStorage.setItem(ALERTS_KEY, JSON.stringify(alerts));
+    if (hydrated) {
+      try { localStorage.setItem(ALERTS_KEY, JSON.stringify(alerts)); } catch { /* storage full / private mode */ }
+    }
   }, [alerts, hydrated]);
 
   const createWatchlist = useCallback((name: string): string => {

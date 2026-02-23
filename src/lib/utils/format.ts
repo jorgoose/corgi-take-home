@@ -14,7 +14,9 @@ export function formatPercentSigned(value: number, decimals: number = 2): string
 }
 
 export function formatPercentUnsigned(value: number, decimals: number = 2): string {
-  return `${value.toFixed(decimals)}%`;
+  const rounded = Number(value.toFixed(decimals));
+  if (rounded === 0) return `0.${"0".repeat(decimals)}%`;
+  return `${Math.abs(value).toFixed(decimals)}%`;
 }
 
 export function formatCurrency(value: number, decimals: number = 2): string {
