@@ -56,8 +56,8 @@ export function ScenarioPageClient({ fund }: ScenarioPageClientProps) {
       <ScenarioChart
         scenarios={scenarios}
         cap={config.cap}
-        bufferStartPct={fund.bufferStartPct}
-        bufferEndPct={fund.bufferEndPct}
+        bufferStartPct={config.bufferStartPct}
+        bufferEndPct={config.bufferEndPct}
       />
 
       <ScenarioTable scenarios={scenarios} />

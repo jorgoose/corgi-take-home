@@ -35,7 +35,7 @@ export function MetricsTable({ fund, outcomePeriod, currentValues }: MetricsTabl
     { label: "Remaining Cap (Net)", value: `${formatPercentUnsigned(currentValues.remainingCapGross)} (${formatPercentUnsigned(currentValues.remainingCapNet)})` },
     { label: "Ref Asset Return to Realize Cap", value: formatPercent(currentValues.refAssetReturnToCap) },
     { label: "Remaining Buffer (Net)", value: `${formatPercentUnsigned(currentValues.remainingBufferGross)} (${formatPercentUnsigned(currentValues.remainingBufferNet)})` },
-    { label: "Downside Before Buffer (Net)", value: `${formatPercent(currentValues.downsideBeforeBufferGross)} (${formatPercent(currentValues.downsideBeforeBuffer)})` },
+    { label: "Downside Before Buffer (Net)", value: `${formatPercent(-currentValues.downsideBeforeBufferGross)} (${formatPercent(-currentValues.downsideBeforeBuffer)})` },
     { label: "Ref Asset to Buffer End", value: formatPercent(currentValues.refAssetToBufferEnd) },
     { label: "Unrealized Option Payoff (Net)", value: `${formatPercent(currentValues.unrealizedOptionPayoffGross)} (${formatPercent(currentValues.unrealizedOptionPayoffNet)})` },
   ];

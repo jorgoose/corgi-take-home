@@ -42,8 +42,8 @@ export function PerformanceChart({ timeSeries, outcomePeriod, bufferStartPct, bu
   const step = Math.max(1, Math.floor(timeSeries.length / 60));
   const data = timeSeries.filter((_, i) => i % step === 0 || i === timeSeries.length - 1).map((p) => ({
     date: formatDateShort(p.date),
-    "Fund NAV Return": p.fundReturn,
-    "Reference ETF Return": p.refAssetReturn,
+    "Fund": p.fundReturn,
+    "Reference Asset": p.refAssetReturn,
   }));
 
   // Calculate y-axis domain
@@ -98,7 +98,7 @@ export function PerformanceChart({ timeSeries, outcomePeriod, bufferStartPct, bu
             {/* Data lines */}
             <Line
               type="monotone"
-              dataKey="Fund NAV Return"
+              dataKey="Fund"
               stroke={CHART_COLORS.fund}
               strokeWidth={2}
               dot={false}
@@ -106,7 +106,7 @@ export function PerformanceChart({ timeSeries, outcomePeriod, bufferStartPct, bu
             />
             <Line
               type="monotone"
-              dataKey="Reference ETF Return"
+              dataKey="Reference Asset"
               stroke={CHART_COLORS.refAsset}
               strokeWidth={2}
               dot={false}
