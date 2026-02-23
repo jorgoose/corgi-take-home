@@ -21,5 +21,9 @@ export const GLOSSARY_TERMS: GlossaryTerm[] = [
   { term: "Starting Fund Value", definition: "The fund's Net Asset Value (NAV) at the beginning of the current outcome period." },
   { term: "Deep Buffer", definition: "A buffer structure where the investor bears the first portion of losses (the 'gap'), and the buffer absorbs losses within a defined range. For example, a -5% to -35% deep buffer means the investor bears the first 5% of losses, the buffer absorbs the next 30%, and the investor bears losses beyond -35%." },
   { term: "Full Protection", definition: "A buffer structure that absorbs 100% of reference asset losses. The tradeoff is a significantly lower upside cap." },
+  { term: "Fund Cap Value", definition: "The maximum value of the fund at the end of the Target Outcome Period if the fund realizes its return at its maximum cap." },
+  { term: "Reference Asset Cap", definition: "The price return needed on the reference asset for the fund to realize the return of its maximum cap." },
+  { term: "Unrealized Option Payoff (Net)", definition: "Based on the fund's value, the potential price return of the fund, before fees and expenses, if held to the end of the Target Outcome Period assuming the current Reference Asset Value remains unchanged. This is due to the intrinsic value of the underlying options positions that create the fund's buffer range." },
+  { term: "Net", definition: "After fees and expenses, excluding brokerage commissions, trading fees, taxes and extraordinary expenses not included in the fund's management fee." },
   { term: "FLEX Options", definition: "FLexible EXchange Options - customizable exchange-traded option contracts used to structure the fund's defined outcome parameters." },
 ];

@@ -13,18 +13,18 @@ export default function HomePage() {
       <nav className="mt-10 space-y-3">
         <ToolLink
           href="/tools/screener"
-          title="Fund Screener"
-          description="Filter and compare all funds by asset, buffer type, and remaining values."
+          title="Fund Matching Tool"
+          description="Search across all Corgi buffer ETFs to find funds that match your investment goals."
         />
         <ToolLink
           href="/tools/performance"
-          title="Outcome Performance"
-          description="Track fund vs. reference asset returns with charts and metrics."
+          title="Outcome Period Performance"
+          description="View the period performance of a selected fund, both for current and historical periods."
         />
         <ToolLink
           href="/tools/scenarios"
-          title="Scenario Visualizer"
-          description="Model hypothetical market scenarios across buffer types."
+          title="Target Outcome Calculator"
+          description="View hypothetical scenario analysis of a specific fund, using existing or custom execution values."
         />
         <ToolLink
           href="/tools/scenario-analysis"

@@ -23,8 +23,12 @@ export interface OutcomePeriod {
   endDate: string;
   startingCapGross: number;
   startingCapNet: number;
+  startingBufferGross: number;
+  startingBufferNet: number;
   startingFundNav: number;
+  fundCapValue: number;
   startingRefAssetPrice: number;
+  refAssetCap: number; // ref asset return % that corresponds to fund reaching its cap
   refAssetCapValue: number;
   bufferStartRefValue: number;
   bufferEndRefValue: number;
@@ -39,11 +43,15 @@ export interface DailyValues {
   refAssetReturnPtd: number;
   remainingCapGross: number;
   remainingCapNet: number;
+  remainingBufferGross: number;
   remainingBufferNet: number;
+  downsideBeforeBufferGross: number;
   downsideBeforeBuffer: number;
   refAssetToBufferEnd: number;
   refAssetReturnToCap: number;
   remainingOutcomePeriodDays: number;
+  unrealizedOptionPayoffGross: number;
+  unrealizedOptionPayoffNet: number;
 }
 
 export interface FundWithCurrentValues extends FundDefinition {

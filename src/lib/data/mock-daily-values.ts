@@ -56,7 +56,13 @@ function generateOutcomePeriod(fund: FundDefinition): OutcomePeriod {
 
   const startingFundNav = 25.00;
 
+  // Buffer gross/net: net accounts for expense ratio
+  const startingBufferGross = fund.bufferSizePct;
+  const startingBufferNet = fund.bufferSizePct - (fund.expenseRatio * 100);
+
   // Calculate reference values
+  const fundCapValue = startingFundNav * (1 + startingCapNet / 100);
+  const refAssetCap = startingCapGross; // ref asset return % that triggers fund cap
   const refAssetCapValue = startingRefPrice * (1 + startingCapGross / 100);
   const bufferStartRefValue = startingRefPrice * (1 + fund.bufferStartPct / 100);
   const bufferEndRefValue = startingRefPrice * (1 + fund.bufferEndPct / 100);
@@ -68,8 +74,12 @@ function generateOutcomePeriod(fund: FundDefinition): OutcomePeriod {
     endDate,
     startingCapGross: Math.round(startingCapGross * 100) / 100,
     startingCapNet: Math.round(startingCapNet * 100) / 100,
+    startingBufferGross: Math.round(startingBufferGross * 100) / 100,
+    startingBufferNet: Math.round(startingBufferNet * 100) / 100,
     startingFundNav,
+    fundCapValue: Math.round(fundCapValue * 100) / 100,
     startingRefAssetPrice: startingRefPrice,
+    refAssetCap: Math.round(refAssetCap * 100) / 100,
     refAssetCapValue: Math.round(refAssetCapValue * 100) / 100,
     bufferStartRefValue: Math.round(bufferStartRefValue * 100) / 100,
     bufferEndRefValue: Math.round(bufferEndRefValue * 100) / 100,
@@ -103,9 +113,13 @@ function generateCurrentValues(fund: FundDefinition, outcomePeriod: OutcomePerio
   const remainingCapNet = outcomePeriod.startingCapNet - Math.max(0, fundReturnPtd);
   const remainingCapGross = outcomePeriod.startingCapGross - Math.max(0, fundReturnPtd);
 
+  const expenseOffset = fund.expenseRatio * 100; // e.g. 0.79
+
   // Remaining buffer depends on how much the ref asset has declined
-  let remainingBufferNet = fund.bufferSizePct;
-  let downsideBeforeBuffer = Math.abs(fund.bufferStartPct);
+  let remainingBufferGross = fund.bufferSizePct;
+  let remainingBufferNet = fund.bufferSizePct - expenseOffset;
+  let downsideBeforeBufferGross = Math.abs(fund.bufferStartPct);
+  let downsideBeforeBuffer = Math.abs(fund.bufferStartPct) + expenseOffset;
 
   if (refAssetReturnPtd < fund.bufferStartPct) {
     // Buffer has been partially consumed
@@ -113,12 +127,21 @@ function generateCurrentValues(fund: FundDefinition, outcomePeriod: OutcomePerio
       fund.bufferSizePct,
       Math.abs(refAssetReturnPtd - fund.bufferStartPct)
     );
-    remainingBufferNet = Math.max(0, fund.bufferSizePct - bufferUsed);
-    downsideBeforeBuffer = 0; // gap already breached for deep buffer
+    remainingBufferGross = Math.max(0, fund.bufferSizePct - bufferUsed);
+    remainingBufferNet = Math.max(0, remainingBufferGross - expenseOffset);
+    downsideBeforeBufferGross = 0;
+    downsideBeforeBuffer = expenseOffset;
   } else if (refAssetReturnPtd < 0 && fund.bufferStartPct < 0) {
     // In the gap for deep buffer
-    downsideBeforeBuffer = Math.max(0, Math.abs(fund.bufferStartPct) - Math.abs(refAssetReturnPtd));
+    downsideBeforeBufferGross = Math.max(0, Math.abs(fund.bufferStartPct) - Math.abs(refAssetReturnPtd));
+    downsideBeforeBuffer = downsideBeforeBufferGross + expenseOffset;
   }
+
+  // Unrealized option payoff: the intrinsic value of the fund's option position
+  // Positive when fund has gained (the options are "in the money" for upside)
+  // Negative when ref asset decline erodes fund value beyond buffer protection
+  const unrealizedOptionPayoffGross = fundReturnPtd;
+  const unrealizedOptionPayoffNet = fundReturnPtd - expenseOffset;
 
   const refAssetToBufferEnd = ((outcomePeriod.bufferEndRefValue / refAssetPrice) - 1) * 100;
   const refAssetReturnToCap = ((outcomePeriod.refAssetCapValue / refAssetPrice) - 1) * 100;
@@ -133,11 +156,15 @@ function generateCurrentValues(fund: FundDefinition, outcomePeriod: OutcomePerio
     refAssetReturnPtd: Math.round(refAssetReturnPtd * 100) / 100,
     remainingCapGross: Math.round(Math.max(0, remainingCapGross) * 100) / 100,
     remainingCapNet: Math.round(Math.max(0, remainingCapNet) * 100) / 100,
-    remainingBufferNet: Math.round(remainingBufferNet * 100) / 100,
+    remainingBufferGross: Math.round(Math.max(0, remainingBufferGross) * 100) / 100,
+    remainingBufferNet: Math.round(Math.max(0, remainingBufferNet) * 100) / 100,
+    downsideBeforeBufferGross: Math.round(downsideBeforeBufferGross * 100) / 100,
     downsideBeforeBuffer: Math.round(downsideBeforeBuffer * 100) / 100,
     refAssetToBufferEnd: Math.round(refAssetToBufferEnd * 100) / 100,
     refAssetReturnToCap: Math.round(refAssetReturnToCap * 100) / 100,
     remainingOutcomePeriodDays: daysRemaining,
+    unrealizedOptionPayoffGross: Math.round(unrealizedOptionPayoffGross * 100) / 100,
+    unrealizedOptionPayoffNet: Math.round(unrealizedOptionPayoffNet * 100) / 100,
   };
 
   return { dailyValues, timeSeries };

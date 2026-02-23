@@ -3,7 +3,7 @@ import Link from "next/link";
 const NAV_LINKS = [
   { href: "/tools/screener", label: "Screener" },
   { href: "/tools/performance", label: "Performance" },
-  { href: "/tools/scenarios", label: "Scenarios" },
+  { href: "/tools/scenarios", label: "Calculator" },
   { href: "/tools/scenario-analysis", label: "Analysis" },
   { href: "/tools/watchlist", label: "Watchlist" },
 ];
