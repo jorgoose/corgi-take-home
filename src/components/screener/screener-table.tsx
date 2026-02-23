@@ -40,9 +40,9 @@ function SortIcon({ column, sort }: { column: string; sort: SortConfig }) {
 }
 
 function bufferHealthColor(remaining: number): string {
-  if (remaining < 3) return "text-red-600 font-semibold";
-  if (remaining < 5) return "text-amber-600";
-  return "text-green-700";
+  if (remaining < 3) return "text-red-400 font-semibold";
+  if (remaining < 5) return "text-amber-400";
+  return "text-green-400";
 }
 
 export function ScreenerTable({ funds, sort, onSort, totalCount }: ScreenerTableProps) {
@@ -107,7 +107,7 @@ export function ScreenerTable({ funds, sort, onSort, totalCount }: ScreenerTable
                 <td className={cn("px-3 py-2 text-right font-mono", bufferHealthColor(fund.currentValues.remainingBufferNet))}>
                   {formatPercentUnsigned(fund.currentValues.remainingBufferNet)}
                 </td>
-                <td className={cn("px-3 py-2 text-right font-mono", fund.currentValues.downsideBeforeBuffer > 0 ? "text-amber-600 font-medium" : "")}>
+                <td className={cn("px-3 py-2 text-right font-mono", fund.currentValues.downsideBeforeBuffer > 0 ? "text-amber-400 font-medium" : "")}>
                   {formatPercentUnsigned(fund.currentValues.downsideBeforeBuffer)}
                 </td>
                 <td className="px-3 py-2 text-right font-mono">

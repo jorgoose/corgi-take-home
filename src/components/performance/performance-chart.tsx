@@ -26,7 +26,7 @@ interface PerformanceChartProps {
 function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-lg border bg-white p-3 shadow-md text-sm">
+    <div className="rounded-lg border bg-popover p-3 shadow-md text-sm">
       <p className="font-medium mb-1">{label}</p>
       {payload.map((entry: any) => (
         <p key={entry.dataKey} style={{ color: entry.color }}>
@@ -57,7 +57,7 @@ export function PerformanceChart({ timeSeries, outcomePeriod, bufferStartPct, bu
       <div className="h-[350px] sm:h-[400px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={data} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
             <XAxis
               dataKey="date"
               tick={{ fontSize: 11 }}

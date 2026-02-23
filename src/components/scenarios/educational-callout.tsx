@@ -29,7 +29,7 @@ export function EducationalCallout({ fund, cap }: EducationalCalloutProps) {
   const { title, description } = getCalloutContent(fund, cap);
 
   return (
-    <div className="rounded-lg border-l-4 border-l-[#FF5C00] bg-orange-50 p-4">
+    <div className="rounded-lg border-l-4 border-l-[#FF5C00] bg-[#FF5C00]/5 p-4">
       <h4 className="text-sm font-semibold text-[#FF5C00] mb-1">{title}</h4>
       <p className="text-sm text-muted-foreground">{description}</p>
     </div>

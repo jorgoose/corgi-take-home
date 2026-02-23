@@ -2,9 +2,9 @@ import { cn } from "@/lib/utils";
 import { BufferType } from "@/lib/types/fund";
 
 const BADGE_STYLES: Record<BufferType, string> = {
-  standard: "bg-green-100 text-green-800 border-green-200",
-  deep: "bg-blue-100 text-blue-800 border-blue-200",
-  full: "bg-purple-100 text-purple-800 border-purple-200",
+  standard: "bg-green-500/15 text-green-400 border-green-500/30",
+  deep: "bg-blue-500/15 text-blue-400 border-blue-500/30",
+  full: "bg-purple-500/15 text-purple-400 border-purple-500/30",
 };
 
 const LABELS: Record<BufferType, string> = {

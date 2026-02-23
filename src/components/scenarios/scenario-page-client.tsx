@@ -40,7 +40,7 @@ export function ScenarioPageClient({ fund }: ScenarioPageClientProps) {
       </div>
 
       {mode === "current" && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+        <div className="rounded-lg border border-amber-500/20 bg-amber-500/10 p-3 text-sm text-amber-400">
           You are viewing outcomes based on current fund values as of {getAsOfDate()}.
           These differ from inception values because {fund.currentValues.remainingOutcomePeriodDays} days remain in the outcome period.
           {fund.currentValues.remainingBufferNet < fund.bufferSizePct && (
