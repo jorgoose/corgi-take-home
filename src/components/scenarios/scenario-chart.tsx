@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
   Legend,
   Cell,
+  LabelList,
 } from "recharts";
 import { ScenarioResult } from "@/lib/types/scenarios";
 import { SCENARIO_COLORS, CHART_COLORS } from "@/lib/constants/chart-config";
@@ -52,7 +53,7 @@ export function ScenarioChart({ scenarios, cap, bufferStartPct, bufferEndPct }: 
       <h3 className="text-sm font-semibold mb-3">Hypothetical Scenario Analysis</h3>
       <div className="h-[350px] sm:h-[400px]">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} margin={{ top: 5, right: 30, left: 10, bottom: 5 }} barGap={2}>
+          <BarChart data={data} margin={{ top: 15, right: 30, left: 10, bottom: 5 }} barGap={2}>
             <CartesianGrid strokeDasharray="3 3" stroke="#27272a" />
             <XAxis dataKey="scenario" tick={{ fontSize: 11 }} />
             <YAxis
@@ -88,8 +89,22 @@ export function ScenarioChart({ scenarios, cap, bufferStartPct, bufferEndPct }: 
             )}
             <ReferenceLine y={0} stroke="#a8a29e" strokeWidth={1} />
 
-            <Bar dataKey="Ref Asset" fill={SCENARIO_COLORS.refAsset} radius={[2, 2, 0, 0]} />
-            <Bar dataKey="Fund" fill={SCENARIO_COLORS.fund} radius={[2, 2, 0, 0]} />
+            <Bar dataKey="Ref Asset" fill={SCENARIO_COLORS.refAsset} radius={[2, 2, 0, 0]}>
+              <LabelList
+                dataKey="Ref Asset"
+                position="top"
+                formatter={((v: number) => `${v > 0 ? "+" : ""}${v.toFixed(1)}%`) as never}
+                style={{ fontSize: 9, fill: SCENARIO_COLORS.refAsset }}
+              />
+            </Bar>
+            <Bar dataKey="Fund" fill={SCENARIO_COLORS.fund} radius={[2, 2, 0, 0]}>
+              <LabelList
+                dataKey="Fund"
+                position="top"
+                formatter={((v: number) => `${v > 0 ? "+" : ""}${v.toFixed(1)}%`) as never}
+                style={{ fontSize: 9, fill: "#d4d4d8" }}
+              />
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </div>
