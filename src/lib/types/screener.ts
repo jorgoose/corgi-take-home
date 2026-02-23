@@ -6,6 +6,10 @@ export interface FilterState {
   seriesMonths: SeriesMonth[];
   daysRemainingMin: number;
   daysRemainingMax: number;
+  remainingBufferMin: number;
+  remainingBufferMax: number;
+  remainingCapMin: number;
+  remainingCapMax: number;
 }
 
 export type SortDirection = "asc" | "desc";
@@ -21,4 +25,8 @@ export const DEFAULT_FILTERS: FilterState = {
   seriesMonths: ["May", "Jun", "Jul", "Aug"],
   daysRemainingMin: 0,
   daysRemainingMax: 365,
+  remainingBufferMin: 0,
+  remainingBufferMax: 100,
+  remainingCapMin: 0,
+  remainingCapMax: 50,
 };

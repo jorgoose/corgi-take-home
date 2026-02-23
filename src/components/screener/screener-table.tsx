@@ -13,6 +13,7 @@ interface ScreenerTableProps {
   sort: SortConfig;
   onSort: (sort: SortConfig) => void;
   totalCount: number;
+  asOfDate: string;
 }
 
 interface Column {
@@ -24,14 +25,11 @@ interface Column {
 
 const COLUMNS: Column[] = [
   { key: "ticker", label: "Ticker", className: "w-20" },
-  { key: "referenceAsset", label: "Ref Asset", className: "w-20" },
-  { key: "bufferType", label: "Buffer", className: "w-24" },
-  { key: "startingCapNet", label: "Starting Cap", shortLabel: "Start Cap", className: "w-24 text-right" },
-  { key: "remainingCapNet", label: "Remaining Cap", shortLabel: "Rem Cap", className: "w-28 text-right" },
-  { key: "remainingBufferNet", label: "Remaining Buffer", shortLabel: "Rem Buf", className: "w-28 text-right" },
-  { key: "downsideBeforeBuffer", label: "Downside Before Buf", shortLabel: "Pre-Buf", className: "w-28 text-right" },
-  { key: "daysRemaining", label: "Days Left", className: "w-24 text-right" },
-  { key: "periodEnd", label: "Period End", className: "w-28 text-right" },
+  { key: "name", label: "Fund Name", className: "min-w-[180px]" },
+  { key: "referenceAsset", label: "Reference Asset", shortLabel: "Ref Asset", className: "w-24" },
+  { key: "remainingCapNet", label: "Remaining Cap (Net)", shortLabel: "Rem Cap", className: "w-28 text-right" },
+  { key: "remainingBufferNet", label: "Remaining Buffer (Net)", shortLabel: "Rem Buffer", className: "w-32 text-right" },
+  { key: "daysRemaining", label: "Remaining Outcome Period (Days)", shortLabel: "Days Left", className: "w-28 text-right" },
 ];
 
 function SortIcon({ column, sort }: { column: string; sort: SortConfig }) {
@@ -45,7 +43,7 @@ function bufferHealthColor(remaining: number): string {
   return "text-green-400";
 }
 
-export function ScreenerTable({ funds, sort, onSort, totalCount }: ScreenerTableProps) {
+export function ScreenerTable({ funds, sort, onSort, totalCount, asOfDate }: ScreenerTableProps) {
   function handleSort(column: string) {
     if (sort.column === column) {
       onSort({ column, direction: sort.direction === "asc" ? "desc" : "asc" });
@@ -56,12 +54,18 @@ export function ScreenerTable({ funds, sort, onSort, totalCount }: ScreenerTable
 
   return (
     <div>
-      <p className="text-sm text-muted-foreground mb-2">
-        Showing {funds.length} of {totalCount} funds
-      </p>
+      {/* FT-style header bar */}
+      <div className="flex items-center justify-between rounded-t-lg bg-[#FF5C00] px-4 py-2.5">
+        <span className="text-sm font-semibold text-white">
+          Buffer Funds As of {asOfDate}
+        </span>
+        <span className="rounded-full bg-white/20 px-3 py-0.5 text-xs font-bold text-white">
+          {funds.length} Matching Fund{funds.length !== 1 ? "s" : ""}
+        </span>
+      </div>
 
       {/* Desktop table */}
-      <div className="hidden md:block overflow-x-auto rounded-lg border">
+      <div className="hidden md:block overflow-x-auto rounded-b-lg border border-t-0">
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-muted/50 border-b">
@@ -70,7 +74,7 @@ export function ScreenerTable({ funds, sort, onSort, totalCount }: ScreenerTable
                   key={col.key}
                   onClick={() => handleSort(col.key)}
                   className={cn(
-                    "px-3 py-2 font-medium text-muted-foreground cursor-pointer hover:text-foreground select-none whitespace-nowrap",
+                    "px-3 py-2 font-medium text-muted-foreground cursor-pointer hover:text-foreground select-none whitespace-nowrap text-left",
                     col.className
                   )}
                 >
@@ -93,13 +97,15 @@ export function ScreenerTable({ funds, sort, onSort, totalCount }: ScreenerTable
                   </Link>
                 </td>
                 <td className="px-3 py-2">
-                  <ReferenceAssetBadge asset={fund.referenceAssetTicker} />
+                  <Link
+                    href={`/tools/performance/${fund.ticker}`}
+                    className="text-[#FF5C00] hover:underline text-xs"
+                  >
+                    {fund.name}
+                  </Link>
                 </td>
                 <td className="px-3 py-2">
-                  <BufferTypeBadge type={fund.bufferType} />
-                </td>
-                <td className="px-3 py-2 text-right font-mono">
-                  {formatPercentUnsigned(fund.outcomePeriod.startingCapNet)}
+                  <ReferenceAssetBadge asset={fund.referenceAssetTicker} />
                 </td>
                 <td className="px-3 py-2 text-right font-mono">
                   {formatPercentUnsigned(fund.currentValues.remainingCapNet)}
@@ -107,23 +113,24 @@ export function ScreenerTable({ funds, sort, onSort, totalCount }: ScreenerTable
                 <td className={cn("px-3 py-2 text-right font-mono", bufferHealthColor(fund.currentValues.remainingBufferNet))}>
                   {formatPercentUnsigned(fund.currentValues.remainingBufferNet)}
                 </td>
-                <td className={cn("px-3 py-2 text-right font-mono", fund.currentValues.downsideBeforeBuffer > 0 ? "text-amber-400 font-medium" : "")}>
-                  {formatPercentUnsigned(fund.currentValues.downsideBeforeBuffer)}
-                </td>
                 <td className="px-3 py-2 text-right font-mono">
                   {fund.currentValues.remainingOutcomePeriodDays}
                 </td>
-                <td className="px-3 py-2 text-right">
-                  {formatDate(fund.outcomePeriod.endDate)}
-                </td>
               </tr>
             ))}
+            {funds.length === 0 && (
+              <tr>
+                <td colSpan={COLUMNS.length} className="px-3 py-8 text-center text-muted-foreground">
+                  No funds match the current filters.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
 
       {/* Mobile cards */}
-      <div className="md:hidden space-y-3">
+      <div className="md:hidden space-y-3 mt-3">
         {funds.map((fund) => (
           <div key={fund.ticker} className="rounded-lg border bg-card p-4 space-y-2">
             <div className="flex items-center justify-between">
@@ -133,17 +140,10 @@ export function ScreenerTable({ funds, sort, onSort, totalCount }: ScreenerTable
               >
                 {fund.ticker}
               </Link>
-              <div className="flex items-center gap-2">
-                <ReferenceAssetBadge asset={fund.referenceAssetTicker} />
-                <BufferTypeBadge type={fund.bufferType} />
-              </div>
+              <ReferenceAssetBadge asset={fund.referenceAssetTicker} />
             </div>
             <p className="text-xs text-muted-foreground">{fund.name}</p>
             <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Starting Cap:</span>
-                <span className="font-mono">{formatPercentUnsigned(fund.outcomePeriod.startingCapNet)}</span>
-              </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Rem Cap:</span>
                 <span className="font-mono">{formatPercentUnsigned(fund.currentValues.remainingCapNet)}</span>

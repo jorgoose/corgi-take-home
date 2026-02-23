@@ -23,6 +23,12 @@ export function getFilteredFunds(filters: FilterState): FundWithCurrentValues[] 
     const days = fund.currentValues.remainingOutcomePeriodDays;
     if (days < filters.daysRemainingMin || days > filters.daysRemainingMax) return false;
 
+    const buffer = fund.currentValues.remainingBufferNet;
+    if (buffer < filters.remainingBufferMin || buffer > filters.remainingBufferMax) return false;
+
+    const cap = fund.currentValues.remainingCapNet;
+    if (cap < filters.remainingCapMin || cap > filters.remainingCapMax) return false;
+
     return true;
   });
 }
